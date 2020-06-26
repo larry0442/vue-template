@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import getAuth from '@/services/auth';
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue';
 
@@ -20,7 +19,6 @@ export default {
   },
   methods: {
     init() {
-      getAuth();
     },
   },
 };
