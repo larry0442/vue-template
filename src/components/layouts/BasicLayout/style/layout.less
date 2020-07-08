@@ -1,0 +1,48 @@
+@import './variables.less';
+
+.basic-layout {
+  &__menu,
+  &__header {
+    position: fixed;
+    top: 0;
+  }
+  &__menu {
+    left: 0;
+  }
+  &__header {
+    left: @layout-menu-main-width;
+    padding-right: @layout-menu-main-width;
+    &--full {
+      left: 0;
+      padding-right: 0;
+    }
+    &-name {
+      padding: 0 20px;
+      color:rgba(0,0,0,.85);
+      font-size:16px;
+      line-height:22px;
+    }
+  }
+  &__content {
+    height: 100vh;
+    padding-top: @layout-header-height;
+    padding-left: @layout-menu-main-width;
+    transition: padding-left @transition-duration;
+    &--open {
+      padding-left: calc(@layout-menu-main-width + @layout-menu-sub-width);
+    }
+    &--full {
+      padding-left: 0;
+    }
+    &-wrap {
+      height: 100%;
+    }
+  }
+  .router-fade-enter-active,
+  .router-fade-leave-active {
+    transition: opacity 0.1s;
+  }
+  .router-fade-enter, .router-fade-leave-to{
+    opacity: 0;
+  }
+}

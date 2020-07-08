@@ -1,4 +1,4 @@
-import { BasicLayout } from '@/components/layouts/index';
+import BasicLayout from '@/components/layouts/index';
 
 const routes = [
   {
