@@ -10,10 +10,11 @@
         theme="dark"
         :selectedKeys="mainSelectedKeys || mainSelectedKeysData"
       >
+        <!-- 一级菜单 -->
         <menu-item
           v-for="item in menu"
+          class="basic-menu__item basic-menu__main-item"
           :key="item.path"
-          class="basic-menu__item basic-menu-main-item"
         >
           <router-link :to="item.path">
             <basic-layout-render
@@ -32,27 +33,23 @@
         </menu-item>
       </a-menu>
     </div>
-
     <!-- 右侧子菜单 -->
     <div
       :class="{
         'basic-menu__sub': true,
-        'basic-menu__sub--open'
-          :collapsed === undefined
-            ?subMenuList&&subMenuList.length
-            :!collapsed
+        'basic-menu__sub--open':
+          collapsed === undefined ? subMenuList && subMenuList.length : !collapsed
       }"
     >
       <a-menu
         class="basic-menu__sub-content"
         mode="inline"
         :openKeys="subOpenKeys || subOpenKeysData"
-        :selectedKey="subSelectedKeys||subSelectedKeysData"
+        :selectedKeys="subSelectedKeys || subSelectedKeysData"
         @openChange="(openKeys) => subOpenKeysData = openKeys.slice(-1)"
       >
         <!-- 二级菜单 -->
         <template v-for="item in subMenuList">
-          <!-- 有子菜单 -->
           <sub-menu
             v-if="item.children && item.children.length"
             :key="item.path"
@@ -69,7 +66,6 @@
               </menu-item>
             </template>
           </sub-menu>
-          <!-- 没有子菜单 -->
           <menu-item
             v-else-if="!item.hidden"
             :key="item.path"
@@ -90,7 +86,6 @@ import Menu from 'ant-design-vue/es/menu';
 import Icon from 'ant-design-vue/es/icon';
 import BasicLayoutRender from './render';
 import getRouteMatched from './utils/getRouteMatched';
-
 
 export default {
   name: 'BasicMenu',
@@ -133,19 +128,14 @@ export default {
     return {
       // 是否可以更新子菜单展开状态
       canUpdateSubmenuState: true,
-
       // 子菜单列表
       subMenuList: [],
-
-      // 选中的一级菜单 菜单项
+      // 选中的一级菜单菜单项
       mainSelectedKeysData: [],
-
-      // 展开的子菜单 菜单项
+      // 展开的子菜单菜单项
       subOpenKeysData: [],
-
-      // 选中的子菜单 菜单项
+      // 选中的子菜单菜单项
       subSelectedKeysData: [],
-
     };
   },
   watch: {
@@ -202,8 +192,7 @@ export default {
         return false;
       });
     },
-
-    // 设置子菜单展开状态
+    // 更新子菜单展开状态
     updateSubmenuState() {
       if (this.subMenuList && this.subMenuList.length) {
         // 子菜单展开
@@ -220,5 +209,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import './style/menu.less';
+@import "./style/menu.less";
 </style>
