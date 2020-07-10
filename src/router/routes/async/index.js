@@ -1,4 +1,4 @@
-import BasicLayout from '@/components/layouts/index';
+import { BasicLayout, BlankLayout } from '@/components/layouts';
 
 const routes = [
   {
@@ -8,7 +8,7 @@ const routes = [
     component: BasicLayout,
     meta: {
       title: '工作台',
-      icon: 'icon-dashboard',
+      icon: 'smile',
     },
     hideChildrenInMenu: true,
     children: [{
@@ -18,32 +18,38 @@ const routes = [
       meta: {
         title: '首页',
       },
-    }, {
-      path: '/home/:type/detail-table',
-      name: 'detail-table',
-      component: () => import('@/components/HelloWorld.vue'),
-      meta: {
-        title: '工作台',
-      },
     }],
   },
   {
-    path: '/program',
-    name: 'program',
-    redirect: '/program/list',
+    path: '/customer',
+    name: 'customer',
+    redirect: '/customer/list',
     component: BasicLayout,
     meta: {
-      title: '项目',
+      title: '客户',
+      icon: 'star',
     },
-    hideChildrenInMenu: true,
-    children: [{
-      path: '/program/list',
-      name: 'program-list',
-      component: () => import('@/components/HelloWorld.vue'),
-      meta: {
-        title: '项目管理',
+    children: [
+      {
+        path: '/customer/list',
+        name: 'customer-list',
+        redirect: '/customer/list/mine',
+        component: BlankLayout,
+        meta: {
+          title: '客户管理',
+        },
+        children: [
+          {
+            path: '/customer/list/mine',
+            name: 'customer-list-mine',
+            component: () => import('@/views/Home'),
+            meta: {
+              title: '我的客户',
+            },
+          },
+        ],
       },
-    }],
+    ],
   },
 ];
 export default routes;

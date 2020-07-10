@@ -10,6 +10,9 @@ const router = new Router({
   base: process.env.BASE_URL,
   routes: basicRoutes,
 });
+
 router.options.routes = router.options.routes.concat(asyncRoutes);
 router.addRoutes(asyncRoutes);
+
+
 export default router;
