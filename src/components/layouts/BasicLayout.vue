@@ -13,6 +13,13 @@
         <div class="basic-layout__title">ant-design-vue</div>
       </slot>
     </template>
+    <template #headerRight>
+      <slot name="headerRight">
+        <div class="basic-layout__icon">
+           <a-icon type="smile"></a-icon>
+        </div>
+      </slot>
+    </template>
     <template>
       <slot></slot>
     </template>
@@ -20,7 +27,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import Layout from '@/components/layouts/BasicLayout/BasicLayout.vue';
 // import UserAvatar from '@components/UserAvatar.vue';
 // import OverflowTooltip from '@components/OverflowTooltip.vue';
@@ -48,10 +54,6 @@ export default {
     };
   },
   computed: {
-    ...mapState(['currentUser']),
-    position() {
-      return this.currentUser.jobList.map((item) => item.name).join(',');
-    },
   },
   methods: {
     toHome() {
@@ -60,7 +62,6 @@ export default {
       }
     },
     handleLogout() {
-      this.$keycloak.logoutFn();
     },
   },
 };
