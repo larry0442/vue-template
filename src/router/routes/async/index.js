@@ -1,4 +1,5 @@
 import { BasicLayout, BlankLayout } from '@/components/layouts';
+import components from './component';
 
 const routes = [
   {
@@ -51,5 +52,6 @@ const routes = [
       },
     ],
   },
+  components,
 ];
 export default routes;
