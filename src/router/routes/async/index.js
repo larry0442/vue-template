@@ -28,7 +28,7 @@ const routes = [
     component: BasicLayout,
     meta: {
       title: '客户',
-      icon: 'star',
+      icon: 'smile',
     },
     children: [
       {
