@@ -31,6 +31,20 @@ const routes = {
           },
         },
       ],
+    }, {
+      path: '/components/table',
+      name: 'components-table',
+      component: () => import('@/views/example/Table.vue'),
+      meta: {
+        title: 'table封装',
+      },
+    }, {
+      path: '/components/user-avatar',
+      name: 'components-user-avatar',
+      component: () => import('@/views/example/UserAvatar.vue'),
+      meta: {
+        title: '用户头像组件',
+      },
     },
   ],
 };
