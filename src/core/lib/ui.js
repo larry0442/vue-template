@@ -41,6 +41,7 @@ import {
   TreeSelect,
   Table,
   Badge,
+  List,
 } from 'ant-design-vue';
 
 Vue.prototype.$message = message;
@@ -89,3 +90,4 @@ Vue.use(Spin);
 Vue.use(Dropdown);
 Vue.use(Steps);
 Vue.use(Rate);
+Vue.use(List);

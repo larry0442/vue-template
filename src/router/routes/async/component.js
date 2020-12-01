@@ -6,45 +6,31 @@ const routes = {
   redirect: true,
   component: BasicLayout,
   meta: {
-    title: '组件介绍',
+    title: 'qiniu_sdk',
     icon: 'smile',
     // authorities:[]
   },
   children: [
     {
-      path: '/components/layouts',
-      name: 'layouts',
+      path: '/components/qiniu',
+      name: 'qiniu',
       redirect: true,
       component: BlankLayout,
       meta: {
-        title: 'layouts布局',
+        title: '文件管理',
         // authorities:[]
 
       },
       children: [
         {
-          path: '/components/layouts/summary',
+          path: '/components/qiniu/summary',
           name: 'components-summary',
           component: () => import('@/views/example/LayoutDetail.vue'),
           meta: {
-            title: 'layouts总览',
+            title: '文件管理控制台',
           },
         },
       ],
-    }, {
-      path: '/components/table',
-      name: 'components-table',
-      component: () => import('@/views/example/Table.vue'),
-      meta: {
-        title: 'table封装',
-      },
-    }, {
-      path: '/components/user-avatar',
-      name: 'components-user-avatar',
-      component: () => import('@/views/example/UserAvatar.vue'),
-      meta: {
-        title: '用户头像组件',
-      },
     },
   ],
 };
