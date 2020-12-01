@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <a-form
       :form="form"
       layout="vertical"
@@ -12,12 +12,26 @@
         </a-col>
         <a-col span="6">
           <a-form-item label="Secret Key:">
-            <a-input v-model="config.secretKey" type="password"></a-input>
+            <a-input
+              v-model="config.secretKey"
+              type="password"
+            ></a-input>
           </a-form-item>
         </a-col>
         <a-col span="4">
           <a-form-item label="bucket:">
-            <a-input v-model="config.bucket" type="text"></a-input>
+            <a-input
+              v-model="config.bucket"
+              type="text"
+            ></a-input>
+          </a-form-item>
+        </a-col>
+        <a-col span="4">
+          <a-form-item label="加速域名:">
+            <a-input
+              v-model="config.cdnUrl"
+              type="text"
+            ></a-input>
           </a-form-item>
         </a-col>
         <a-col span="4">
@@ -30,32 +44,84 @@
             </a-select>
           </a-form-item>
         </a-col>
-        <a-col span="4">
+        <a-col span="24">
           <a-form-item label="操作：">
-            <a-button type="primary" @click="saveConfig">保存配置</a-button>
-            <a-divider type="vertical"></a-divider>
-            <a-button type="primary" @click="getConfig">获取配置</a-button>
+            <a-button-group>
+              <a-button
+                type="primary"
+                @click="saveConfig"
+              >保存配置</a-button>
+              <a-divider type="vertical"></a-divider>
+              <a-button
+                type="primary"
+                @click="getConfig"
+              >获取配置</a-button>
+              <a-divider type="vertical"></a-divider>
+              <a-button
+                type="primary"
+                @click="handleUpload"
+              >上传文件</a-button>
+              <a-divider type="vertical"></a-divider>
+              <a-button
+                type="primary"
+                @click="getFileListMethod"
+              >获取bucket中的文件列表</a-button>
+            </a-button-group>
           </a-form-item>
         </a-col>
       </a-row>
     </a-form>
-    <a-divider>operate</a-divider>
-    <div class="operate">
-      <a-button-group>
-        <a-button type="primary">上传文件</a-button>
-        <a-divider type="vertical"></a-divider>
-        <a-button type="primary" @click="getFileListMethod">获取bucket中的文件列表</a-button>
-      </a-button-group>
+    <div class="list-content">
+      <a-list :data-source="listData">
+        <a-list-item
+          slot="renderItem"
+          slot-scope="item, index"
+        >
+          <a slot="actions">delete</a>
+          <a slot="actions">rename</a>
+          <a-list-item-meta>
+            <span
+              slot="title"
+              :key="index"
+            >{{ item.title }}</span>
+            <span slot="description">{{item.description}}</span>
+            <span slot="avatar" style="cursor: pointer" @click="handlePreview(item.avatar)">
+              <a-avatar :src="item.avatar" />
+            </span>
+          </a-list-item-meta>
+        </a-list-item>
+      </a-list>
     </div>
-    <div class="result">123</div>
+    <upload-modal
+      ref="uploadModal"
+      :visible="isShowUoloadModal"
+      @close="()=>{isShowUoloadModal = false}"
+      @refresh="getFileListMethod"
+    ></upload-modal>
+    <a-modal
+      ref="priviewModal"
+      :visible="previewVisible"
+      :footer="null"
+      @cancel="()=>{previewVisible = false}"
+    >
+      <img
+        alt="example"
+        style="width: 100%"
+        :src="previewImage"
+      />
+    </a-modal>
   </div>
 </template>
 
 <script>
 import { getFileList } from '../../services/file';
+import UploadModal from './components/UploadModal.vue';
 
 export default {
   name: 'Qiniu',
+  components: {
+    UploadModal,
+  },
   data() {
     return {
       form: this.$form.createForm(this),
@@ -63,8 +129,13 @@ export default {
         accessKey: '',
         secretKey: '',
         bucket: '',
+        cdnUrl: '',
         zone: '',
       },
+      listData: [],
+      isShowUoloadModal: false,
+      previewVisible: false,
+      previewImage: '',
     };
   },
   created() {
@@ -80,12 +151,33 @@ export default {
     saveConfig() {
       window.localStorage.setItem('config', JSON.stringify(this.config));
     },
+    handleUpload() {
+      this.isShowUoloadModal = true;
+    },
     getFileListMethod() {
-      getFileList({ bucket: this.config.bucket });
+      getFileList({ bucket: this.config.bucket }).then((res) => {
+        this.listData = res.data.items.map((item, index) => ({
+          id: index + new Date(),
+          title: item.key,
+          description: `http://${this.config.cdnUrl}/${item.key}`,
+          avatar: `http://${this.config.cdnUrl}/${item.key}`,
+        }));
+      });
+    },
+    handlePreview(src) {
+      this.previewImage = src;
+      this.previewVisible = true;
     },
   },
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+.main {
+  .list-content {
+    height: 650px;
+    width: 100%;
+    overflow: scroll;
+  }
+}
 </style>
